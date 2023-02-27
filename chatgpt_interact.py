@@ -1,6 +1,5 @@
 from chatgpt_wrapper import ChatGPT
 import speech_recognition as sr
-from enum import Enum, auto
 import json
 import time
 from rpi_ws281x import PixelStrip, Color
@@ -26,11 +25,6 @@ TRIGGER_PHRASE = "computer"
 
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
-
-
-class LED_STATUS(Enum):
-    ON = auto
-    OFF = auto
 
 
 bot = ChatGPT()
@@ -66,9 +60,6 @@ def listen_for_audio(offline: bool = True, listen_seconds: int = 10) -> str:
     except sr.WaitTimeoutError:
         print("No voice detected")
 
-
-def set_led_status(status: LED_STATUS) -> None:
-    pass
 
 def colorWipe(strip, color, wait_ms=50):
     """Wipe color across display a pixel at a time."""
@@ -129,7 +120,7 @@ def main():
     while True:
         if not triggered:
             colorWipe(strip, Color(0, 0, 0), 10)
-            voice_request = listen_for_audio(offline=False, listen_seconds=2)
+            voice_request = listen_for_audio(offline=True, listen_seconds=2)
             if voice_request == TRIGGER_PHRASE:
                 triggered = True
         else:
